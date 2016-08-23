@@ -163,7 +163,7 @@ def main():
     print "The following date/time will work for your current Dolphin settings: \n"
     print(adjustedClock)
     print "This is year/month/day and a 24 hour clock format, that may have to be adjusted accordingly for your computer.\n"
-    print "You will be ", threshold + framesAway, " frames away from your target.\n"
+    print "You will be ", threshold + framesAway+1, " frames away from your target.\n"
     print "Due to the nanosecond issue, this will only work on your computer with the settings you have for Dolphin right now. Please read the readme for more information."
 
 while True:
