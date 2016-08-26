@@ -9,7 +9,7 @@ Zari, for researching seeding
 Admiral_Fish, for helping with testing and making a video of this
 Chimera, for additional testing
 
-Note: this is not working for Colosseum at this time. I will update when that is done.
+Note: this is not working for Colosseum at this time. There is not a constant increase/decrease, and manipulating the clock frequency is not precise enough.
 
 Admiral's video guide: https://www.youtube.com/watch?v=bcARBesyEEI
 
@@ -36,7 +36,7 @@ Furthermore, you will want to give yourself room to handle nature locks, noise, 
 9. Double- check the result by entering the seed you get from Dolphin at the given date/time. From there, RNG your target as usual.
 
 Nanosecond Issue Explanation (technical information on how/why this works):
-	Gamecube and Wii games that use date/time for seeding will do so at a nanosecond level. In the case of Gale of Darkness, the initial seed has a constant 40.5 million added to it for every second incremented on the RTC.  This allows one to predict what the next seed will be. I have left comments on the code about what parts to change, if one wishes to adapt the code for another game. This may be useful for TAS, speedrunning, debugging, and other things that require RNG manipulation. Doing so is my way of saying thanks to the Dolphin devs and the TAS community, for their help on making this possible.
+	Gamecube and Wii games that use date/time for seeding will do so at a nanosecond level. In the case of Gale of Darkness, the initial seed has a constant 40.5 million added to it for every second incremented on the RTC. If a game has such a constant, then one may predict what the next seed will be. I have left comments on the code about what parts to change, if one wishes to adapt the code for another game. This may be useful for TAS, speedrunning, debugging, and other things that require RNG manipulation. Doing so is my way of saying thanks to the Dolphin devs and the TAS community, for their help on making this possible.
 Side note: depending on how 3DS emulation turns out in the future, it may be possible to use this program to manipulate initial seeds there. I plan to revisit this when the time comes.
 
 While you can replicate the same result over and over, it is highly unlikely that two computers will obtain the same result. The following is an incomplete list of what may affect your seeding. If you know something else that may affect it, please let me know by submitting an issue or just emailing me.
