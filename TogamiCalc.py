@@ -7,7 +7,7 @@ import datetime
 #Credits:
 # Rising_Fog from the Dolphin dev team for making the custom RTC feature that made this possible
 #Kaphotics and Omegadonut for figuring out XDRNG PRNG
-#Zari for researching seeding
+#Zari for researching seeding + cleaning code
 #Admiral_Fish for helping with testing and making a video of this
 #See the readme before using this program
 
@@ -35,7 +35,7 @@ def XDRNGR(PRNG):
 #The subroutine to call the RNG multiple times. May be modified for other games.
 def callRNG(PRNG,direction,times):
     state=PRNG
-    for counter in range(0,times):
+    for counter in range(times):
         if direction == 1:
             state=XDRNG(state)
         else:
@@ -50,7 +50,7 @@ def callRNG(PRNG,direction,times):
 def nextSeed(currSeed):
     nextSeed = currSeed + 40500000
     if nextSeed > 4294967296:
-        nextSeed %= 4294967296
+        nextSeed &= 4294967295
     return nextSeed
 
 #Prolly not the best way to validate input, but it'll do
@@ -59,7 +59,7 @@ def main():
     while True:
         try:
             calibratedSeed=int(raw_input("Enter the seed you get at the Gale of Darkness warning screen at 1/1/2000, 12:00:00 AM. "),16)
-            if calibratedSeed > 4294967296 or calibratedSeed < 0:
+            if(calibratedSeed > 4294967296 or calibratedSeed < 0):
                 raise ValueError
             else:
                 break
@@ -70,8 +70,8 @@ def main():
 
     while True:
         try:
-            DesiredTarget=int(raw_input("Enter the seed at which your target Pokemon is generated. If you do not know, use Calculate PiD from IVs on RNG Reporter. "),16)
-            if DesiredTarget > 4294967296 or DesiredTarget < 0:
+            DesiredTarget=int(raw_input("Enter the seed at which your target Pokemon is generated. If you do not know, use Calculate PID from IVs on RNG Reporter. "),16)
+            if(DesiredTarget > 4294967296 or DesiredTarget < 0):
                 raise ValueError
             else:
                 break
@@ -111,7 +111,7 @@ def main():
             print "Your input is invalid. Try again."
 
 
-    print"The program will now calculate a seed near your target. This may take 20-30+ minutes depending on your settings."
+    print "The program will now calculate a seed near your target. This may take 20-30+ minutes depending on your settings."
 
 
 
@@ -121,6 +121,7 @@ def main():
     AdjustedTarget = callRNG(DesiredTarget, 2, threshold)
 
     secondsToAdd=0
+    secondcount = 0
     targetHit = 0
 
     minutesPassed = 0
@@ -131,7 +132,7 @@ def main():
         framesAway=0
 
         #This loop ensures you don't get frames too far from your desired target.
-        for frames in range(0,MaxFrames):
+        for frames in range(MaxFrames):
             PRNG = XDRNG(PRNG)
             framesAway+=1
 
@@ -147,10 +148,12 @@ def main():
         #Factors the 40.5 million addition to the PRNG between each second, while not going over 2^32.
         calibratedSeed = nextSeed(calibratedSeed)
         secondsToAdd+=1
+        secondcount += 1
 
         #Maybe change this at some point
-        if secondsToAdd % 60 == 0:
+        if secondcount == 60:
             minutesPassed+=1
+            secondcount = 0
             print "Minute(s) added to the RTC so far: ", minutesPassed, "No seed found yet. Going for the next minute."
 
 
@@ -168,10 +171,8 @@ def main():
 
 while True:
     main()
-    more = (raw_input("Type 1 and press Enter if you want to do another search, or anything else to exit.")).lower()
+    more = (raw_input("Type 1 and press Enter if you want to do another search, or anything else to exit."))
 
     if more != "1":
         break
-
-
 
